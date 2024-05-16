@@ -19,6 +19,14 @@ public class FileServiceImpl implements FileService {
 
     public FileServiceImpl(@Value("${files.directory}") String directory) {
         this.directory = Paths.get(directory).toAbsolutePath().normalize();
+
+        if (!this.directory.toFile().exists()) {
+            boolean success = this.directory.toFile().mkdir();
+
+            if (!success) {
+                throw new RuntimeException();
+            }
+        }
     }
 
     @Override
@@ -40,7 +48,11 @@ public class FileServiceImpl implements FileService {
         File directory = new File(this.directory + File.separator + username);
 
         if (!directory.exists()) {
-            directory.mkdir();
+            boolean success = directory.mkdir();
+
+            if (!success) {
+                throw new RuntimeException();
+            }
         }
 
         return username;
