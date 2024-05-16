@@ -20,7 +20,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         Info info = new Info()
-                .title("API Task")
+                .title("API Files")
                 .version("1.0")
                 .description("This project is a RESTful API of a files manager")
                 .termsOfService("https://github.com/JulioEvencio/api-files/blob/main/UNLICENSE")

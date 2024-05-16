@@ -25,13 +25,12 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final String corsOriginPatterns;
     private final JWTService jwtService;
     private final UserDetailsService userDetailsService;
 
-    @Value("${cors.originPatterns}")
-    private String corsOriginPatterns;
-
-    public SecurityConfig(JWTService jwtService, UserDetailsService userDetailsService) {
+    public SecurityConfig(@Value("${cors.originPatterns}") String corsOriginPatterns, JWTService jwtService, UserDetailsService userDetailsService) {
+        this.corsOriginPatterns = corsOriginPatterns;
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }

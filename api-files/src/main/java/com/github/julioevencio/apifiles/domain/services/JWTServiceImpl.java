@@ -14,11 +14,13 @@ import java.util.List;
 @Service
 public class JWTServiceImpl implements JWTService {
 
-    @Value("${security.jwt.token.secret-key}")
-    private String secretKey;
+    private final String secretKey;
+    private final Long validityInMilliseconds;
 
-    @Value("${security.jwt.token.expire-length}")
-    private Long validityInMilliseconds;
+    public JWTServiceImpl(@Value("${security.jwt.token.secret-key}") String secretKey, @Value("${security.jwt.token.expire-length}") Long validityInMilliseconds) {
+        this.secretKey = secretKey;
+        this.validityInMilliseconds = validityInMilliseconds;
+    }
 
     @Override
     public String createAccessToken(String username, List<String> roles) {
