@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -26,6 +28,17 @@ public class FileServiceImpl implements FileService {
             if (!success) {
                 throw new RuntimeException();
             }
+        }
+    }
+
+    @Override
+    public InputStream download(String fileName) {
+        try {
+            Path file = directory.resolve(this.getDirectory() + File.separator + fileName);
+
+            return new FileInputStream(file.toAbsolutePath().toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
