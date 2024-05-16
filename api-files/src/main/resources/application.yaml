@@ -11,7 +11,13 @@ spring:
         hibernate:
             ddl-auto: none
             dialect: org.hibernate.dialect.PostgreSQLDialect
+    servlet:
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 100MB
 spring-doc:
     pathsToMatch: /v1/api/**
     swagger-ui:
         use-root-path: true
+files:
+    directory: files
