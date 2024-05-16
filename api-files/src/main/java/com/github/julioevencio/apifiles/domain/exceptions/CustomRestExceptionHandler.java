@@ -1,5 +1,7 @@
 package com.github.julioevencio.apifiles.domain.exceptions;
 
+import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesLoginException;
+import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesSQLException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,13 @@ public class CustomRestExceptionHandler {
         ApiFilesMessageError error = new ApiFilesMessageError("Invalid data", List.of(e.getMessage()));
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+    }
+
+    @ExceptionHandler(ApiFilesLoginException.class)
+    public ResponseEntity<ApiFilesMessageError> handlerApiFilesLoginException(ApiFilesLoginException e) {
+        ApiFilesMessageError error = new ApiFilesMessageError("Login error", List.of(e.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
 }

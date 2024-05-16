@@ -2,7 +2,7 @@ package com.github.julioevencio.apifiles.api.v1.dto.register;
 
 import com.github.julioevencio.apifiles.domain.entities.UserEntity;
 
-public class RegisterMapper {
+public class RegisterMapperDTO {
 
     public static UserEntity fromDTO(RegisterRequestDTO dto) {
         return new UserEntity(null, dto.getUsername(), dto.getEmail(), dto.getPassword(), false, false, false, false, null);

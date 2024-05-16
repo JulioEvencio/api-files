@@ -1,4 +1,4 @@
-package com.github.julioevencio.apifiles.domain.exceptions;
+package com.github.julioevencio.apifiles.domain.exceptions.custom;
 
 public class ApiFilesSQLException extends RuntimeException {
 

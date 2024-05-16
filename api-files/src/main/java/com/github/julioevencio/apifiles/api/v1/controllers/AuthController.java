@@ -1,5 +1,7 @@
 package com.github.julioevencio.apifiles.api.v1.controllers;
 
+import com.github.julioevencio.apifiles.api.v1.dto.login.LoginRequestDTO;
+import com.github.julioevencio.apifiles.api.v1.dto.login.LoginResponseDTO;
 import com.github.julioevencio.apifiles.api.v1.dto.register.RegisterRequestDTO;
 import com.github.julioevencio.apifiles.api.v1.dto.register.RegisterResponseDTO;
 import com.github.julioevencio.apifiles.domain.exceptions.ApiFilesMessageError;
@@ -63,6 +65,50 @@ public class AuthController {
     )
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(dto));
+    }
+
+    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Generate jwt token",
+            description = "Generate jwt token",
+            tags = {"Auth"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Generate jwt token",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = LoginResponseDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad request",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable entity",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.login(dto));
     }
 
 }
