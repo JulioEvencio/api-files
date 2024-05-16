@@ -31,7 +31,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Register a user",
             description = "Register a user",
@@ -67,7 +67,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(dto));
     }
 
-    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Generate jwt token",
             description = "Generate jwt token",
