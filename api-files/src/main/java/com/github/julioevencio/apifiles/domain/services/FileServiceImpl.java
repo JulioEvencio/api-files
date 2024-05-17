@@ -2,16 +2,14 @@ package com.github.julioevencio.apifiles.domain.services;
 
 import com.github.julioevencio.apifiles.api.v1.dto.file.FileRequestDTO;
 import com.github.julioevencio.apifiles.api.v1.dto.file.FileResponseDTO;
+import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesDownloadException;
 import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesUploadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -38,8 +36,8 @@ public class FileServiceImpl implements FileService {
             Path file = directory.resolve(this.getDirectory() + File.separator + fileName);
 
             return new FileInputStream(file.toAbsolutePath().toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            throw new ApiFilesDownloadException("File not found");
         }
     }
 

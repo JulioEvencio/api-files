@@ -1,5 +1,6 @@
 package com.github.julioevencio.apifiles.domain.exceptions;
 
+import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesDownloadException;
 import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesLoginException;
 import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesSQLException;
 import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesUploadException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +54,13 @@ public class CustomRestExceptionHandler {
         ApiFilesMessageError error = new ApiFilesMessageError("Upload file error", List.of(e.getMessage()));
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+    }
+
+    @ExceptionHandler(ApiFilesDownloadException.class)
+    public ResponseEntity<ApiFilesMessageError> handlerApiFilesDownloadException(ApiFilesDownloadException e) {
+        ApiFilesMessageError error = new ApiFilesMessageError("Download file error", List.of(e.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(ApiFilesSQLException.class)

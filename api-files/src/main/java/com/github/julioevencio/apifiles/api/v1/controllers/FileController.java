@@ -10,15 +10,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
@@ -32,7 +30,7 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @GetMapping(path = "/{fileName:.+}")
+    @GetMapping(path = "/{fileName:.+}", produces = MediaType.ALL_VALUE)
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),
             summary = "Download file by name",
@@ -43,7 +41,8 @@ public class FileController {
                             responseCode = "200",
                             description = "Download completed",
                             content = @Content(
-                                    schema = @Schema(implementation = Resource.class)
+                                    mediaType = MediaType.ALL_VALUE,
+                                    schema = @Schema(implementation = InputStreamResource.class)
                             )
                     ),
                     @ApiResponse(
@@ -63,6 +62,14 @@ public class FileController {
                             )
                     ),
                     @ApiResponse(
+                            responseCode = "404",
+                            description = "Not Found",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable entity",
                             content = @Content(
@@ -72,17 +79,11 @@ public class FileController {
                     )
             }
     )
-    public ResponseEntity<Void> download(@PathVariable String fileName, HttpServletResponse response) {
-        try {
-            InputStream file = fileService.download(fileName);
+    public ResponseEntity<InputStreamResource> download(@PathVariable String fileName) {
+        InputStream file = fileService.download(fileName);
+        InputStreamResource response = new InputStreamResource(file);
 
-            org.apache.tomcat.util.http.fileupload.IOUtils.copy(file, response.getOutputStream());
-            response.flushBuffer();
-
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
