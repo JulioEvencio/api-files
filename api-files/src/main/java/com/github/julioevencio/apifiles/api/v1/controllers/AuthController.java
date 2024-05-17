@@ -64,7 +64,9 @@ public class AuthController {
             }
     )
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(dto));
+        RegisterResponseDTO response = authService.register(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -108,7 +110,9 @@ public class AuthController {
             }
     )
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.OK).body(authService.login(dto));
+        LoginResponseDTO response = authService.login(dto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

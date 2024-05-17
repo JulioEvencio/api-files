@@ -30,7 +30,7 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @GetMapping(path = "/{fileName:.+}", produces = MediaType.ALL_VALUE)
+    @GetMapping(path = "/download/{fileName:.+}", produces = MediaType.ALL_VALUE)
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),
             summary = "Download file by name",
@@ -86,7 +86,7 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),
             summary = "Upload a file",
