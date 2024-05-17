@@ -126,7 +126,7 @@ public class FileController {
                     )
             }
     )
-    public ResponseEntity<FileResponseDTO> upload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<FileResponseDTO> upload(@RequestParam MultipartFile file) {
         FileResponseDTO response = fileService.upload(new FileRequestDTO(file));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

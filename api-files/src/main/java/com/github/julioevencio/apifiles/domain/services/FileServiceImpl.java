@@ -2,6 +2,7 @@ package com.github.julioevencio.apifiles.domain.services;
 
 import com.github.julioevencio.apifiles.api.v1.dto.file.FileRequestDTO;
 import com.github.julioevencio.apifiles.api.v1.dto.file.FileResponseDTO;
+import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesUploadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -44,16 +45,16 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileResponseDTO upload(FileRequestDTO dto) {
-        String fileName = StringUtils.cleanPath(dto.getFile().getOriginalFilename());
-        Path targetLocation = directory.resolve(this.getDirectory() + File.separator + fileName);
-
         try {
-            dto.getFile().transferTo(targetLocation);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            String fileName = StringUtils.cleanPath(dto.getFile().getOriginalFilename());
+            Path targetLocation = directory.resolve(this.getDirectory() + File.separator + fileName);
 
-        return new FileResponseDTO("Upload completed!");
+            dto.getFile().transferTo(targetLocation);
+
+            return new FileResponseDTO("Upload completed!");
+        } catch (Exception e) {
+            throw new ApiFilesUploadException("Invalid file");
+        }
     }
 
     private String getDirectory() {
