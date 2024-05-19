@@ -30,7 +30,7 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @GetMapping(path = "/download/{fileName:.+}", produces = MediaType.ALL_VALUE)
+    @GetMapping(path = "/{fileName:.+}", produces = MediaType.ALL_VALUE)
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),
             summary = "Download file by name",
@@ -86,7 +86,7 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping(path = "/backup", produces = "application/zip")
+    @GetMapping(produces = "application/zip")
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),
             summary = "Backup all files",
@@ -144,7 +144,7 @@ public class FileController {
                 .body(response);
     }
 
-    @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),
             summary = "Upload a file",
@@ -191,7 +191,7 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping(path = "/delete/{fileName:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/{fileName:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),
             summary = "Delete file by name",
