@@ -3,6 +3,7 @@ package com.github.julioevencio.apifiles.domain.services;
 import com.github.julioevencio.apifiles.api.v1.dto.file.FileRequestDTO;
 import com.github.julioevencio.apifiles.api.v1.dto.file.FileResponseDTO;
 import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesBackupException;
+import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesDeleteException;
 import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesDownloadException;
 import com.github.julioevencio.apifiles.domain.exceptions.custom.ApiFilesUploadException;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,6 +84,16 @@ public class FileServiceImpl implements FileService {
             return new FileResponseDTO("Upload completed!");
         } catch (Exception e) {
             throw new ApiFilesUploadException("Invalid file");
+        }
+    }
+
+    @Override
+    public void delete(String fileName) {
+        try {
+            Path file = uploadsDir.resolve(this.getUserDir() + File.separator + fileName);
+            Files.delete(file);
+        } catch (IOException e) {
+            throw new ApiFilesDeleteException("File not found");
         }
     }
 

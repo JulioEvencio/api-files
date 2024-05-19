@@ -13,4 +13,6 @@ public interface FileService {
 
     FileResponseDTO upload(FileRequestDTO dto);
 
+    void delete(String fileName);
+
 }

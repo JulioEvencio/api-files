@@ -66,6 +66,13 @@ public class CustomRestExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(ApiFilesDeleteException.class)
+    public ResponseEntity<ApiFilesMessageError> handlerApiFilesDeleteException(ApiFilesDeleteException e) {
+        ApiFilesMessageError error = new ApiFilesMessageError("Delete error", List.of(e.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
     @ExceptionHandler(ApiFilesSQLException.class)
     public ResponseEntity<ApiFilesMessageError> handlerApiFilesSQLException(ApiFilesSQLException e) {
         ApiFilesMessageError error = new ApiFilesMessageError("Invalid data", List.of(e.getMessage()));

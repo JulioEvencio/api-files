@@ -191,4 +191,55 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @DeleteMapping(path = "/delete/{fileName:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            security = @SecurityRequirement(name = "bearerAuth"),
+            summary = "Delete file by name",
+            description = "Delete file by name",
+            tags = {"Files"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Delete completed"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad request",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not Found",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable entity",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<Void> delete(@PathVariable String fileName) {
+        fileService.delete(fileName);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
