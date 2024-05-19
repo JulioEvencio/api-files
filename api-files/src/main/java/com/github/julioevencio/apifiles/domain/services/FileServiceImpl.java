@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
@@ -60,8 +61,10 @@ public class FileServiceImpl implements FileService {
         try {
             this.createZipBackup();
             Path file = backupsDir.resolve(this.getUserDir());
+            InputStream zipFile = new FileInputStream(file.toAbsolutePath().toString());
+            Files.deleteIfExists(file);
 
-            return new FileInputStream(file.toAbsolutePath().toString());
+            return zipFile;
         } catch (ApiFilesBackupException e) {
             throw new ApiFilesBackupException(e.getMessage());
         } catch (IOException e) {
