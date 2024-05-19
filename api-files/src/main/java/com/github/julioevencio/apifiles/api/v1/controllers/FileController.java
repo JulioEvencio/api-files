@@ -86,6 +86,64 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping(path = "/backup", produces = "application/zip")
+    @Operation(
+            security = @SecurityRequirement(name = "bearerAuth"),
+            summary = "Backup all files",
+            description = "Backup all files",
+            tags = {"Files"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Backup completed",
+                            content = @Content(
+                                    mediaType = "application/zip",
+                                    schema = @Schema(implementation = InputStreamResource.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad request",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not Found",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable entity",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ApiFilesMessageError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<InputStreamResource> backup() {
+        InputStream file = fileService.backup();
+        InputStreamResource response = new InputStreamResource(file);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/zip"))
+                .body(response);
+    }
+
     @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             security = @SecurityRequirement(name = "bearerAuth"),

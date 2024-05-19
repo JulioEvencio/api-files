@@ -9,6 +9,8 @@ public interface FileService {
 
     InputStream download(String fileName);
 
+    InputStream backup();
+
     FileResponseDTO upload(FileRequestDTO dto);
 
 }
