@@ -104,7 +104,7 @@ public class FileServiceImpl implements FileService {
         File dir = new File(this.uploadsDir + File.separator + this.getUserDir());
         File[] files = dir.listFiles();
 
-        if (files != null) {
+        if (files == null) {
             throw new ApiFilesBackupException("No file found for backup");
         }
 
