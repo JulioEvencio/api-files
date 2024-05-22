@@ -35,6 +35,8 @@ Prerequisites:
 # Clone this repository
 git clone https://github.com/JulioEvencio/api-files.git
 
+# Configure your database in the application.yaml file
+
 # Enter the project folder
 cd api-files/api-files
 
